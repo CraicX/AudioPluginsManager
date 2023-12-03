@@ -1,0 +1,1 @@
+Lib\validator.exe --list > Lib\plugins.txt

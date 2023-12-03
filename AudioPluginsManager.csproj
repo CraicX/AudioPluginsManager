@@ -1,0 +1,320 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>Resources\VSTExplorer.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Lib\editorhost.exe" />
+    <None Remove="Lib\get-plugins.cmd" />
+    <None Remove="Lib\moduleinfotool.exe" />
+    <None Remove="Lib\validator.exe" />
+    <None Remove="Resources\Data\Vst3Info\holder.txt" />
+    <None Remove="Resources\img\am-fxv2a.ico" />
+    <None Remove="Resources\img\am-fxv2a.png" />
+    <None Remove="Resources\img\am-fxv2b.ico" />
+    <None Remove="Resources\img\am-fxv2b.png" />
+    <None Remove="Resources\img\am-fxv3a.ico" />
+    <None Remove="Resources\img\am-fxv3a.png" />
+    <None Remove="Resources\img\am-fxv3b.ico" />
+    <None Remove="Resources\img\am-fxv3b.png" />
+    <None Remove="Resources\img\am-fxx3a.ico" />
+    <None Remove="Resources\img\am-fxx3a.png" />
+    <None Remove="Resources\img\am-fxx3b.ico" />
+    <None Remove="Resources\img\am-fxx3b.png" />
+    <None Remove="Resources\img\am-instrumentv2a.ico" />
+    <None Remove="Resources\img\am-instrumentv2a.png" />
+    <None Remove="Resources\img\am-instrumentv2b.ico" />
+    <None Remove="Resources\img\am-instrumentv2b.png" />
+    <None Remove="Resources\img\am-instrumentv3a.ico" />
+    <None Remove="Resources\img\am-instrumentv3a.png" />
+    <None Remove="Resources\img\am-instrumentv3b.ico" />
+    <None Remove="Resources\img\am-instrumentv3b.png" />
+    <None Remove="Resources\img\am-instrumentx3a.ico" />
+    <None Remove="Resources\img\am-instrumentx3a.png" />
+    <None Remove="Resources\img\am-instrumentx3b.ico" />
+    <None Remove="Resources\img\am-instrumentx3b.png" />
+    <None Remove="Resources\img\bug.png" />
+    <None Remove="Resources\img\disabled.png" />
+    <None Remove="Resources\img\fx.png" />
+    <None Remove="Resources\img\fx2.png" />
+    <None Remove="Resources\img\fxbank.ico" />
+    <None Remove="Resources\img\instrument.ico" />
+    <None Remove="Resources\img\instrument.png" />
+    <None Remove="Resources\img\io.png" />
+    <None Remove="Resources\img\keyboard.png" />
+    <None Remove="Resources\img\other.png" />
+    <None Remove="Resources\img\pause.png" />
+    <None Remove="Resources\img\play.png" />
+    <None Remove="Resources\img\plugin.png" />
+    <None Remove="Resources\img\plugins.png" />
+    <None Remove="Resources\img\pm-eq.ico" />
+    <None Remove="Resources\img\pm-eq.png" />
+    <None Remove="Resources\img\pm-folder.ico" />
+    <None Remove="Resources\img\pm-folder.png" />
+    <None Remove="Resources\img\pm-fx.ico" />
+    <None Remove="Resources\img\pm-fx.png" />
+    <None Remove="Resources\img\pm-fx2.ico" />
+    <None Remove="Resources\img\pm-fx2.png" />
+    <None Remove="Resources\img\pm-fxa.ico" />
+    <None Remove="Resources\img\pm-fxa.png" />
+    <None Remove="Resources\img\pm-fxv2.ico" />
+    <None Remove="Resources\img\pm-fxv2.png" />
+    <None Remove="Resources\img\pm-instrument.ico" />
+    <None Remove="Resources\img\pm-instrument.png" />
+    <None Remove="Resources\img\pm-instrumenta.ico" />
+    <None Remove="Resources\img\pm-instrumenta.png" />
+    <None Remove="Resources\img\pm-instrumentv2.ico" />
+    <None Remove="Resources\img\pm-instrumentv2.png" />
+    <None Remove="Resources\img\settings.png" />
+    <None Remove="Resources\img\sound.png" />
+    <None Remove="Resources\img\stop.png" />
+    <None Remove="Resources\img\t-fx.png" />
+    <None Remove="Resources\img\t-fx2.png" />
+    <None Remove="Resources\img\t-instruments.png" />
+    <None Remove="Resources\img\t-instruments2.png" />
+    <None Remove="Resources\img\t-vendor.png" />
+    <None Remove="Resources\img\t-vendor2.png" />
+    <None Remove="Resources\img\vendor.png" />
+    <None Remove="Resources\img\vst.ico" />
+    <None Remove="Resources\img\vst3_plugin.ico" />
+    <None Remove="Resources\img\vst3_plugin.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Lib\editorhost.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Lib\get-plugins.cmd">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Lib\moduleinfotool.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Lib\validator.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Data\Vst3Info\holder.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\am-fxv2a.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\am-fxv2a.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\am-fxv2b.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\am-fxv2b.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\am-fxv3a.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\am-fxv3a.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\am-fxv3b.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\am-fxv3b.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\am-fxx3a.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\am-fxx3a.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\am-fxx3b.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\am-fxx3b.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\am-instrumentv2a.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\am-instrumentv2a.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\am-instrumentv2b.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\am-instrumentv2b.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\am-instrumentv3a.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\am-instrumentv3a.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\am-instrumentv3b.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\am-instrumentv3b.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\am-instrumentx3a.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\am-instrumentx3a.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\am-instrumentx3b.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\am-instrumentx3b.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\bug.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\disabled.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\fx.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\fx2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\fxbank.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\instrument.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\instrument.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\io.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\keyboard.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\other.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\pause.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\play.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\plugin.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\plugins.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\pm-eq.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\pm-eq.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\pm-folder.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\pm-folder.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\pm-fx.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\pm-fx.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\pm-fx2.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\pm-fx2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\pm-fxa.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\pm-fxa.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\pm-fxv2.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\pm-fxv2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\pm-instrument.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\pm-instrument.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\pm-instrumenta.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\pm-instrumenta.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\pm-instrumentv2.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\pm-instrumentv2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\settings.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\sound.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\stop.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\t-fx.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\t-fx2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\t-instruments.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\t-instruments2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\t-vendor.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\t-vendor2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\vendor.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\vst.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\vst3_plugin.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\img\vst3_plugin.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\VSTExplorer.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AdonisUI.ClassicTheme" Version="1.17.1" />
+    <PackageReference Include="System.Text.Json" Version="8.0.0" />
+  </ItemGroup>
+
+</Project>
