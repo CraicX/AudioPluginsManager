@@ -12,8 +12,46 @@ public class Plugin : TreeViewItemBase
 {
     public string Name { get; set; } = "Unknown";
     public string Version { get; set; }
-    public string FilePath { get; set; }
-    public string Image { get; set; } = "Resources/img/vst3_plugin.png";
+    public string FilePath { get; set;
+    }
+    public string Image
+    {
+        get
+        {
+            if (Categories.Contains("instrument"))
+            {
+                return "Resources/img/am-instrumentv3a.png";
+            }
+            else
+            {
+                return "Resources/img/am-fxv3a.png";
+            }
+        }
+    }
+
+    public string[] Categories
+    {
+        get
+        {
+            List<string> categories = [];
+
+            foreach (var _class in Classes)
+            {
+                if (_class.SubCategories == null) continue;
+
+                foreach (var subCategory in _class.SubCategories)
+                {
+                    if (!categories.Contains(subCategory))
+                    {
+                        categories.Add(subCategory.ToLower());
+                    }
+                }
+            }
+
+            return categories.ToArray();
+        }
+    }
+
 
 
 
