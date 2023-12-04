@@ -10,7 +10,7 @@
         mc:Ignorable="d"
         Title="Audio Plugins Manager" Height="450" Width="800">
     <DockPanel Background="#22211E" >
-        <StatusBar DockPanel.Dock="Bottom" Background="#2F2E2D">
+        <StatusBar DockPanel.Dock="Bottom" Background="#2F2E2D" Margin="0,0,0,0" Panel.ZIndex="-10" BorderThickness="1" BorderBrush="#FF4A4845" Foreground="#FF968F8F">
             <StatusBar.ItemsPanel>
                 <ItemsPanelTemplate>
                     <Grid>
@@ -29,15 +29,15 @@
             <StatusBarItem>
                 <TextBlock Name="LblActive" Text="Active: 0" />
             </StatusBarItem>
-            <Separator Grid.Column="1" />
+            <Separator Grid.Column="1" Background="#22211E" />
             <StatusBarItem Grid.Column="2" >
                 <TextBlock Name="LblDisabled" Text="Disabled: 0" />
             </StatusBarItem>
-            <Separator Grid.Column="3" />
+            <Separator Grid.Column="3" Background="#22211E" />
             <StatusBarItem Grid.Column="4">
                 <TextBlock Name="LblStatus" Text="" />
             </StatusBarItem>
-            <Separator Grid.Column="5" />
+            <Separator Grid.Column="5" Background="#22211E" />
             <StatusBarItem Grid.Column="6">
                 <ProgressBar Name="PBar" Value="0" Width="90" Height="16" />
             </StatusBarItem>
@@ -47,27 +47,29 @@
                 <ColumnDefinition Width="300" />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-
-            <DockPanel Grid.Column="0">
-                <Border Name="ToolBarPanelBorder" BorderThickness="1" BorderBrush="Black" Background="#2F2E2D" DockPanel.Dock="Top">
+            <Border BorderThickness="0.8" BorderBrush="#050505" Grid.Column="0">
+            <DockPanel >
+                <Border Name="ToolBarPanelBorder" BorderThickness="1" BorderBrush="#101010" Background="#2F2E2D" DockPanel.Dock="Top" Margin="-1,-0.8,-1,0" Panel.ZIndex="1">
                     <ToolBarPanel Background="#2F2E2D" VerticalAlignment="Bottom" Height="36" ClipToBounds="True" >
                         <ToolBar Height="26" Background="#2F2E2D" Margin="10,5,10,0" ToolBarTray.IsLocked="True" >
-                            <Button Background="#32312F" Padding="0" Width="32" Height="24">
-                                <Image Source="Resources/img/t-vendor.png" />
+                            
+                            <Button Background="#32312F" Padding="0" Width="32" Height="24" Name="TglInstruments" Click="TglInstruments_Click">
+                                <Image Source="Resources/img/t-instruments.png" Name="ImgInstruments" />
                             </Button>
-                            <Button Background="#32312F" Padding="0" Width="32" Height="24">
-                                <Image Source="Resources/img/t-instruments.png" />
+                            <Button Background="#32312F" Padding="0" Width="32" Height="24" Name="TglFX" Click="TglFX_Click">
+                                <Image Source="Resources/img/t-fx.png" Name="ImgFX" />
                             </Button>
-                            <Button Background="#32312F" Padding="0" Width="32" Height="24">
-                                <Image Source="Resources/img/t-fx.png" />
+                            <Button Background="#32312F" Padding="0" Width="32" Height="24" Name="TglVendors" Click="TglVendors_Click">
+                                <Image Source="Resources/img/t-vendor.png" Name="ImgVendors" />
                             </Button>
+                            
                             <Separator Foreground="Black" Background="#111111" Margin="4,0,4,0" />
                             <TextBox Name="TBFilter" Height="22" Width="170" Background="#222222" BorderBrush="Black" BorderThickness="1" />
 
                         </ToolBar>
                     </ToolBarPanel>
                 </Border>
-                <Border Name="TreeViewBorder" BorderThickness="1" BorderBrush="Black" Background="#FF2D2C28" Padding="10">
+                <Border Name="TreeViewBorder" BorderThickness="0" BorderBrush="#22211E" Background="#FF2D2C28" Padding="10">
                     <TreeView Name="TVVendor">
                         <TreeView.ItemContainerStyle>
                             <Style TargetType="TreeViewItem">
@@ -79,23 +81,25 @@
                         <TreeView.Resources>
                             <HierarchicalDataTemplate DataType="{x:Type classes:Vendor}" ItemsSource="{Binding Plugins}">
                                 <StackPanel Orientation="Horizontal">
-                                    <!-- Image Source="{Binding Image}" Margin="0,0,5,0" -->
+                                    <WrapPanel Orientation="Horizontal" Width="35">
+                                        <TextBlock Text="[ " Foreground="Coral" />
+                                        <TextBlock Text="{Binding Plugins.Count}" Foreground="DarkCyan" />
+                                        <TextBlock Text=" ]" Foreground="Coral" />
+                                    </WrapPanel>
                                     <TextBlock Text="{Binding Name}" Foreground="Beige" />
-                                    <TextBlock Text="   [ " Foreground="Coral" />
-                                    <TextBlock Text="{Binding Plugins.Count}" Foreground="Coral" />
-                                    <TextBlock Text=" ]" Foreground="Coral" />
                                 </StackPanel>
                             </HierarchicalDataTemplate>
                             <DataTemplate DataType="{x:Type classes:Plugin}">
                                 <StackPanel Orientation="Horizontal">
                                     <Image Source="{Binding Image}" Margin="-25,0,5,0" />
-                                    <TextBlock Text="{Binding Name}" Foreground="LemonChiffon" />
+                                    <TextBlock Text="{Binding Name}" Foreground="#FAFAFA" />
                                 </StackPanel>
                             </DataTemplate>
                         </TreeView.Resources>
                     </TreeView>
                 </Border>
             </DockPanel>
+            </Border>
 
 
             <StackPanel Grid.Column="1">
