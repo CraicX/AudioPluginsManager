@@ -74,4 +74,8 @@ public partial class MainWindow : AdonisWindow
         //ImgInstruments.Source = new BitmapImage(new Uri("Resources/img/" + (IsInstrumentsVisible ? "t-instruments.png" : "t-instruments2.png")));
     }
 
+    private void MenuItem_Click(object sender, RoutedEventArgs e)
+    {
+        Application.Current.Shutdown();
+    }
 }

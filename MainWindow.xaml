@@ -42,63 +42,88 @@
                 <ProgressBar Name="PBar" Value="0" Width="90" Height="16" />
             </StatusBarItem>
         </StatusBar>
+        <Menu DockPanel.Dock="Top" Background="#2E2D2C" Foreground="#FF968F8F">
+            <MenuItem Header="File">
+                <MenuItem Header="Exit" Click="MenuItem_Click"></MenuItem>
+            </MenuItem>
+
+        </Menu>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="300" />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <Border BorderThickness="0.8" BorderBrush="#050505" Grid.Column="0">
-            <DockPanel >
-                <Border Name="ToolBarPanelBorder" BorderThickness="1" BorderBrush="#101010" Background="#2F2E2D" DockPanel.Dock="Top" Margin="-1,-0.8,-1,0" Panel.ZIndex="1">
-                    <ToolBarPanel Background="#2F2E2D" VerticalAlignment="Bottom" Height="36" ClipToBounds="True" >
-                        <ToolBar Height="26" Background="#2F2E2D" Margin="10,5,10,0" ToolBarTray.IsLocked="True" >
-                            
-                            <Button Background="#32312F" Padding="0" Width="32" Height="24" Name="TglInstruments" Click="TglInstruments_Click">
-                                <Image Source="Resources/img/t-instruments.png" Name="ImgInstruments" />
-                            </Button>
-                            <Button Background="#32312F" Padding="0" Width="32" Height="24" Name="TglFX" Click="TglFX_Click">
-                                <Image Source="Resources/img/t-fx.png" Name="ImgFX" />
-                            </Button>
-                            <Button Background="#32312F" Padding="0" Width="32" Height="24" Name="TglVendors" Click="TglVendors_Click">
-                                <Image Source="Resources/img/t-vendor.png" Name="ImgVendors" />
-                            </Button>
-                            
-                            <Separator Foreground="Black" Background="#111111" Margin="4,0,4,0" />
-                            <TextBox Name="TBFilter" Height="22" Width="170" Background="#222222" BorderBrush="Black" BorderThickness="1" />
+                <DockPanel >
+                    <Border Name="ToolBarPanelBorder" BorderThickness="1" BorderBrush="#101010" Background="#2F2E2D" DockPanel.Dock="Top" Margin="-1,-0.8,-1,0" Panel.ZIndex="1">
+                        <ToolBarPanel Background="#2F2E2D" VerticalAlignment="Bottom" Height="36" ClipToBounds="True" >
+                            <ToolBar Height="26" Background="#2F2E2D" Margin="10,5,10,0" ToolBarTray.IsLocked="True" >
 
-                        </ToolBar>
-                    </ToolBarPanel>
-                </Border>
-                <Border Name="TreeViewBorder" BorderThickness="0" BorderBrush="#22211E" Background="#FF2D2C28" Padding="10">
-                    <TreeView Name="TVVendor">
-                        <TreeView.ItemContainerStyle>
-                            <Style TargetType="TreeViewItem">
-                                <Setter Property="IsSelected" Value="{Binding IsSelected}" />
-                                <Setter Property="IsExpanded" Value="{Binding IsExpanded}" />
-                                <Setter Property="Padding" Value="5,2,5,2" />
-                            </Style>
-                        </TreeView.ItemContainerStyle>
-                        <TreeView.Resources>
-                            <HierarchicalDataTemplate DataType="{x:Type classes:Vendor}" ItemsSource="{Binding Plugins}">
-                                <StackPanel Orientation="Horizontal">
-                                    <WrapPanel Orientation="Horizontal" Width="35">
-                                        <TextBlock Text="[ " Foreground="Coral" />
-                                        <TextBlock Text="{Binding Plugins.Count}" Foreground="DarkCyan" />
-                                        <TextBlock Text=" ]" Foreground="Coral" />
-                                    </WrapPanel>
-                                    <TextBlock Text="{Binding Name}" Foreground="Beige" />
-                                </StackPanel>
-                            </HierarchicalDataTemplate>
-                            <DataTemplate DataType="{x:Type classes:Plugin}">
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Source="{Binding Image}" Margin="-25,0,5,0" />
-                                    <TextBlock Text="{Binding Name}" Foreground="#FAFAFA" />
-                                </StackPanel>
-                            </DataTemplate>
-                        </TreeView.Resources>
-                    </TreeView>
-                </Border>
-            </DockPanel>
+                                <Button Background="#32312F" Padding="0" Width="32" Height="24" Name="TglInstruments" Click="TglInstruments_Click">
+                                    <Image Source="Resources/img/t-instruments.png" Name="ImgInstruments" />
+                                </Button>
+                                <Button Background="#32312F" Padding="0" Width="32" Height="24" Name="TglFX" Click="TglFX_Click">
+                                    <Image Source="Resources/img/t-fx.png" Name="ImgFX" />
+                                </Button>
+                                <Button Background="#32312F" Padding="0" Width="32" Height="24" Name="TglVendors" Click="TglVendors_Click">
+                                    <Image Source="Resources/img/t-vendor.png" Name="ImgVendors" />
+                                </Button>
+
+                                <Separator Foreground="Black" Background="#111111" Margin="4,0,4,0" />
+                                <TextBox x:Name="TBFilter" Height="22" Width="170" Background="#222222" BorderBrush="Black" BorderThickness="1">
+                                    <TextBox.Style>
+                                        <Style TargetType="{x:Type TextBox}">
+
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Foreground" Value="PaleGoldenrod" />
+                                                    <Setter Property="Background" Value="#32323F" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                            
+                                            <Setter Property="Foreground" Value="PaleGoldenrod" />
+                                            <Setter Property="CaretBrush" Value="White" />
+                                            <Setter Property="SelectionBrush" Value="White" />
+                                            <Setter Property="SelectionTextBrush" Value="Black" />
+                                            <Setter Property="SelectionOpacity" Value="0.5" />
+                                            
+                                        </Style>
+                                    </TextBox.Style>
+                                </TextBox>
+
+                            </ToolBar>
+                        </ToolBarPanel>
+                    </Border>
+                    <Border Name="TreeViewBorder" BorderThickness="0" BorderBrush="#22211E" Background="#FF2D2C28" Padding="10">
+                        <TreeView Name="TVVendor">
+                            <TreeView.ItemContainerStyle>
+                                <Style TargetType="TreeViewItem">
+                                    <Setter Property="IsSelected" Value="{Binding IsSelected}" />
+                                    <Setter Property="IsExpanded" Value="{Binding IsExpanded}" />
+                                    <Setter Property="Padding" Value="5,2,5,2" />
+                                </Style>
+                            </TreeView.ItemContainerStyle>
+                            <TreeView.Resources>
+                                <HierarchicalDataTemplate DataType="{x:Type classes:Vendor}" ItemsSource="{Binding Plugins}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <WrapPanel Orientation="Horizontal" Width="35">
+                                            <TextBlock Text="[ " Foreground="Coral" />
+                                            <TextBlock Text="{Binding Plugins.Count}" Foreground="DarkCyan" />
+                                            <TextBlock Text=" ]" Foreground="Coral" />
+                                        </WrapPanel>
+                                        <TextBlock Text="{Binding Name}" Foreground="Beige" />
+                                    </StackPanel>
+                                </HierarchicalDataTemplate>
+                                <DataTemplate DataType="{x:Type classes:Plugin}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{Binding Image}" Margin="-25,0,5,0" />
+                                        <TextBlock Text="{Binding Name}" Foreground="#FAFAFA" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </TreeView.Resources>
+                        </TreeView>
+                    </Border>
+                </DockPanel>
             </Border>
 
 
