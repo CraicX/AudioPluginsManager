@@ -14,6 +14,7 @@ using AudioPluginsManager.Classes;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 
 namespace AudioPluginsManager;
 /// <summary>
@@ -77,5 +78,15 @@ public partial class MainWindow : AdonisWindow
     private void MenuItem_Click(object sender, RoutedEventArgs e)
     {
         Application.Current.Shutdown();
+    }
+
+    private void TVVendor_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+    {
+        //Debug.WriteLine();
+    }
+
+    private void TBFilter_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        Vst3.FilterPlugins(TBFilter.Text);
     }
 }

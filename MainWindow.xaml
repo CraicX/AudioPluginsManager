@@ -70,7 +70,7 @@
                                 </Button>
 
                                 <Separator Foreground="Black" Background="#111111" Margin="4,0,4,0" />
-                                <TextBox x:Name="TBFilter" Height="22" Width="170" Background="#222222" BorderBrush="Black" BorderThickness="1">
+                                <TextBox x:Name="TBFilter" Height="22" Width="170" Background="#222222" BorderBrush="Black" BorderThickness="1" TextChanged="TBFilter_TextChanged" >
                                     <TextBox.Style>
                                         <Style TargetType="{x:Type TextBox}">
 
@@ -95,7 +95,7 @@
                         </ToolBarPanel>
                     </Border>
                     <Border Name="TreeViewBorder" BorderThickness="0" BorderBrush="#22211E" Background="#FF2D2C28" Padding="10">
-                        <TreeView Name="TVVendor">
+                        <TreeView Name="TVVendor" SelectedItemChanged="TVVendor_SelectedItemChanged">
                             <TreeView.ItemContainerStyle>
                                 <Style TargetType="TreeViewItem">
                                     <Setter Property="IsSelected" Value="{Binding IsSelected}" />

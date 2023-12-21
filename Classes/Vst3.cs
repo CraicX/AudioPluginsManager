@@ -158,6 +158,66 @@ public static class Vst3
 
     }
 
+    public static void FilterPlugins(string filter)
+    {
+        Config.Main.TVVendor.ItemsSource = null;
+        Config.Main.TVVendor.Items.Clear();
+
+        using (Config.Main.TVVendor.Items.DeferRefresh())
+        {
+            Plugins.Clear();
+            VendorMap.Clear();
+
+            foreach (var plugin in PluginsAll)
+            {
+                if (plugin.IsFiltered(filter))
+                {
+                    Plugins.Add(plugin);
+
+                    if (VendorMap.TryGetValue(plugin.FactoryInfo.Vendor, out var vendor))
+                    {
+                        if (!vendor.Plugins.Contains<Plugin>(plugin))
+                        {
+                            vendor.Plugins.Add(plugin);
+                        }
+                    }
+                    else
+                    {
+                        if (plugin.FactoryInfo.Vendor == null)
+                        {
+                            plugin.FactoryInfo.Vendor = "Unknown";
+                        }
+
+                        vendor = new Vendor
+                        {
+                            Name    = plugin.FactoryInfo.Vendor,
+                            URL     = plugin.FactoryInfo.URL,
+                            EMail   = plugin.FactoryInfo.EMail,
+                            Plugins = [plugin],
+                        };
+
+                        VendorMap[plugin.FactoryInfo.Vendor] = vendor;
+                    }
+                }
+            }
+
+            // Add to treeview
+
+            Config.Main.LblActive.Text = string.Concat("Active: ", Plugins.Count.ToString("N0"));
+            //Config.Main.TVVendor.ItemsSource = VendorMap.Values;
+        }
+        foreach (var vendor in VendorMap.Values)
+        {
+            Config.Main.TVVendor.Items.Add(vendor);
+        }
+
+        //  Sort the TreeView
+        Config.Main.TVVendor.Items.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending));
+
+        //Config.Main.TVVendor.Items.Refresh();
+    }
+
+
     private static async void BuildPluginInfo()
     {
         var TotalPlugins = PluginPaths.Count;

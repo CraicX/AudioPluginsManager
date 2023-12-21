@@ -10,10 +10,26 @@ using System.Text.Json.Serialization;
 namespace AudioPluginsManager.Classes;
 public class Plugin : TreeViewItemBase
 {
+    private List<string> _keywords = [];
+
+    public string Keywords
+    {
+        get { 
+            var kw = string.Join(", ", _keywords);
+
+            if (kw == "")
+            {
+                kw = BuildKeywords();
+            }
+
+            return kw;
+        }
+        set => _keywords = value.Split(',').ToList();
+    }
+
     public string Name { get; set; } = "Unknown";
     public string Version { get; set; }
-    public string FilePath { get; set;
-    }
+    public string FilePath { get; set; }
     public string Image
     {
         get
@@ -28,6 +44,56 @@ public class Plugin : TreeViewItemBase
             }
         }
     }
+
+    public bool IsFiltered(string filter)
+    {
+        if (filter == "") return true;
+
+        var isFiltered = true;
+
+        if (_keywords.Count == 0) BuildKeywords();
+
+        var filterWords = filter.ToLower().Split(' ');
+
+        foreach (var word in filterWords)
+        {
+            if (!_keywords.Any(kw => kw.Contains(word)))
+            {
+                isFiltered = false;
+            }
+        }
+
+        return isFiltered;
+    }
+
+
+    public string BuildKeywords()
+    {
+        _keywords = [ Name.ToLower(), ];
+
+        if (Classes == null) return "";
+
+        foreach (var _class in Classes)
+        {
+            if (_class.Vendor != null && _class.Vendor != "" && !_keywords.Contains(_class.Vendor))
+            {
+                _keywords.Add(_class.Vendor.ToLower());
+            }
+
+            if (_class.SubCategories == null) continue;
+
+            foreach (var subCategory in _class.SubCategories)
+            {
+                if (!_keywords.Contains(subCategory))
+                {
+                    _keywords.Add(subCategory.ToLower());
+                }
+            }
+        }
+
+        return string.Join(", ", _keywords);
+    }
+
 
     public string[] Categories
     {
