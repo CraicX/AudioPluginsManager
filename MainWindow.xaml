@@ -9,8 +9,8 @@
         xmlns:adonisControls="clr-namespace:AdonisUI.Controls;assembly=AdonisUI"
         mc:Ignorable="d"
         Title="Audio Plugins Manager" Height="450" Width="800">
-    <DockPanel Background="#22211E" >
-        <StatusBar DockPanel.Dock="Bottom" Background="#2F2E2D" Margin="0,0,0,0" Panel.ZIndex="-10" BorderThickness="1" BorderBrush="#FF4A4845" Foreground="#FF968F8F">
+    <DockPanel Background="#1A1A1A" >
+        <StatusBar DockPanel.Dock="Bottom" Background="#2F2F2F" Margin="0,0,0,0" Panel.ZIndex="-10" BorderThickness="1" BorderBrush="#FF4A4845" Foreground="#FF968F8F">
             <StatusBar.ItemsPanel>
                 <ItemsPanelTemplate>
                     <Grid>
@@ -39,12 +39,16 @@
             </StatusBarItem>
             <Separator Grid.Column="5" Background="#22211E" />
             <StatusBarItem Grid.Column="6">
-                <ProgressBar Name="PBar" Value="0" Width="90" Height="16" />
+                <ProgressBar Name="PBar" Value="0" Width="90" Height="16" Background="#FF272626" />
             </StatusBarItem>
         </StatusBar>
-        <Menu DockPanel.Dock="Top" Background="#2E2D2C" Foreground="#FF968F8F">
-            <MenuItem Header="File">
-                <MenuItem Header="Exit" Click="MenuItem_Click"></MenuItem>
+        <Menu DockPanel.Dock="Top" Background="#2F2F2F">
+            <MenuItem Header="File" Foreground="#5F5F5F">
+                <MenuItem Name="MnuFileExit" Header="Exit" Click="MnuFileExit_Click"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Tools" Foreground="#5F5F5F">
+                <MenuItem Name="MnuToolsScan" Header="Scan for Plugins" Click="MnuToolsScan_Click"></MenuItem>
+                <MenuItem Name="MnuToolsOptions" Header="Options" Click="MnuToolsOptions_Click"></MenuItem>
             </MenuItem>
 
         </Menu>
@@ -55,9 +59,9 @@
             </Grid.ColumnDefinitions>
             <Border BorderThickness="0.8" BorderBrush="#050505" Grid.Column="0">
                 <DockPanel >
-                    <Border Name="ToolBarPanelBorder" BorderThickness="1" BorderBrush="#101010" Background="#2F2E2D" DockPanel.Dock="Top" Margin="-1,-0.8,-1,0" Panel.ZIndex="1">
-                        <ToolBarPanel Background="#2F2E2D" VerticalAlignment="Bottom" Height="36" ClipToBounds="True" >
-                            <ToolBar Height="26" Background="#2F2E2D" Margin="10,5,10,0" ToolBarTray.IsLocked="True" >
+                    <Border Name="ToolBarPanelBorder" BorderThickness="1" BorderBrush="#101010" Background="#474747" DockPanel.Dock="Top" Margin="-1,-0.8,-1,0" Panel.ZIndex="1">
+                        <ToolBarTray Background="#474747" VerticalAlignment="Bottom" Height="36" ClipToBounds="True" >
+                            <ToolBar Height="26" Background="#474747" Margin="10,5,10,0" ToolBarTray.IsLocked="True" >
 
                                 <Button Background="#32312F" Padding="0" Width="32" Height="24" Name="TglInstruments" Click="TglInstruments_Click">
                                     <Image Source="Resources/img/t-instruments.png" Name="ImgInstruments" />
@@ -92,10 +96,10 @@
                                 </TextBox>
 
                             </ToolBar>
-                        </ToolBarPanel>
+                        </ToolBarTray>
                     </Border>
-                    <Border Name="TreeViewBorder" BorderThickness="0" BorderBrush="#22211E" Background="#FF2D2C28" Padding="10">
-                        <TreeView Name="TVVendor" SelectedItemChanged="TVVendor_SelectedItemChanged">
+                    <Border Name="TreeViewBorder" BorderThickness="0" BorderBrush="#22211E" Background="#474747" Padding="10">
+                        <TreeView Name="TVVendor" SelectedItemChanged="TVVendor_SelectedItemChanged" Background="#2F2F2F">
                             <TreeView.ItemContainerStyle>
                                 <Style TargetType="TreeViewItem">
                                     <Setter Property="IsSelected" Value="{Binding IsSelected}" />
@@ -106,7 +110,7 @@
                             <TreeView.Resources>
                                 <HierarchicalDataTemplate DataType="{x:Type classes:Vendor}" ItemsSource="{Binding Plugins}">
                                     <StackPanel Orientation="Horizontal">
-                                        <WrapPanel Orientation="Horizontal" Width="35">
+                                        <WrapPanel Width="35">
                                             <TextBlock Text="[ " Foreground="Coral" />
                                             <TextBlock Text="{Binding Plugins.Count}" Foreground="DarkCyan" />
                                             <TextBlock Text=" ]" Foreground="Coral" />

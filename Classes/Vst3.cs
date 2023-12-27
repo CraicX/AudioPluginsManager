@@ -11,148 +11,179 @@ using System.Threading.Tasks;
 namespace AudioPluginsManager.Classes;
 public static class Vst3
 {
-    public static List<string> PluginPaths { get; set; }             = [];
-    public static List<Plugin> PluginsAll { get; set; }              = [];
-    public static List<Plugin> Plugins { get; set; }                 = [];
-    public static Dictionary<string, Vendor> VendorMap { get; set; } = [];
-    public static Dictionary<string, Category> CategoryMap { get; set; } = [];
+    public static List<string> PluginFolders { get; set; }                   = [];
+    public static List<string> PluginPaths { get; set; }                     = [];
+    public static List<Plugin> PluginsAll { get; set; }                      = [];
+    public static List<Plugin> Plugins { get; set; }                         = [];
+    public static Dictionary<string, Vendor> VendorMap { get; set; }         = [];
+    public static Dictionary<string, Category> CategoryMap { get; set; }     = [];
+    public static Dictionary<string, PluginInfo> PluginInfoMap { get; set; } = [];
 
-    public static void GetVst3Plugins()
+    public static void Init()
+    {
+        if (Properties.Settings.Default.Folders != null && Properties.Settings.Default.Folders.Count > 0)
+        {
+            PluginFolders.AddRange((IEnumerable<string>)Properties.Settings.Default.Folders);
+        }
+
+        LoadMap();
+
+        if (PluginInfoMap.Count == 0)
+        {
+            GetVst3Plugins();
+        }
+        else
+        {
+            GetPluginInfo();
+        }
+    }
+
+    public static void LoadMap()
+    {
+        var MapPath = Path.Combine(Config.Vst3InfoPath, "PluginSet.map");
+
+        if (!File.Exists(MapPath))
+        {
+            return;
+        }
+
+        var json = File.ReadAllText(MapPath);
+
+        var pluginSet = System.Text.Json.JsonSerializer.Deserialize<PluginSet>(json);
+
+        foreach (var pluginInfo in pluginSet.Plugins)
+        {
+            PluginInfoMap[pluginInfo.FilePath] = pluginInfo;
+        }
+    }
+
+    public static void SaveMap()
+    {
+        var MapPath = Path.Combine(Config.Vst3InfoPath, "PluginSet.map");
+
+        var pluginSet = new PluginSet();
+
+        pluginSet.Plugins.AddRange(PluginInfoMap.Values);
+
+        var json = System.Text.Json.JsonSerializer.Serialize(pluginSet);
+
+        File.WriteAllText(MapPath, json);
+    }
+
+
+    public static void GetVst3Plugins(bool rescan=false)
     {
         PluginPaths = GetVst3Paths();
 
-        BuildPluginInfo();
+        if (rescan)
+        {
+            PluginInfoMap.Clear();
+            Plugins.Clear();
+            PluginsAll.Clear();
+            VendorMap.Clear();
+            CategoryMap.Clear();
+            Config.Main.TVVendor.ItemsSource = null;
+            Config.Main.TVVendor.Items.Clear();
+        }
 
-        GetPluginInfo();
+        BuildPluginInfo(rescan);
     }
     
     private static void GetPluginInfo()
     {
-        //  Get list of json files in Vst3InfoPath
-
-        List<string> jsonFiles = [];
-
-        Dictionary<string, string> VSTMap = [];
-
-        foreach (var file in PluginPaths)
-        {
-            VSTMap[string.Concat(Path.GetFileName(file), ".json")] = file;
-        }
-
         var JsonOptions = new JsonSerializerOptions
         {
             AllowTrailingCommas = true,
         };
 
-        foreach (var file in Directory.GetFiles(Config.Vst3InfoPath))
+        foreach (var pluginInfo in PluginInfoMap.Values)
         {
-            if (file.EndsWith(".json"))
-            {
-                jsonFiles.Add(file);
-            }
-        }
-
-        //  Parse each json file
-
-        foreach (var file in jsonFiles)
-        {
-            var json = File.ReadAllText(file);
-
-            if (string.IsNullOrEmpty(json?.Trim()))
-            {
-                continue;
-            }
-
             List<string> categories = [];
 
-            var plugin = System.Text.Json.JsonSerializer.Deserialize<Plugin>(json, JsonOptions);
+            var plugin = System.Text.Json.JsonSerializer.Deserialize<Plugin>(pluginInfo.Json, JsonOptions);
 
-            if (VSTMap.TryGetValue(Path.GetFileName(file), out var pluginPath))
+            plugin.FilePath = pluginInfo.FilePath;
+
+            Plugins.Add(plugin);
+
+            if (VendorMap.TryGetValue(plugin.FactoryInfo.Vendor, out var vendor))
             {
-                plugin.FilePath = pluginPath;
-
-                Plugins.Add(plugin);
-
-                if (VendorMap.TryGetValue(plugin.FactoryInfo.Vendor, out var vendor))
+                if (!vendor.Plugins.Contains<Plugin>(plugin))
                 {
-                    if (!vendor.Plugins.Contains<Plugin>(plugin)) {
-                        vendor.Plugins.Add(plugin);
+                    vendor.Plugins.Add(plugin);
+                }
+            }
+            else
+            {
+                if (plugin.FactoryInfo.Vendor == null)
+                {
+                    plugin.FactoryInfo.Vendor = "Unknown";
+                }
+
+                vendor = new Vendor
+                {
+                    Name    = plugin.FactoryInfo.Vendor,
+                    URL     = plugin.FactoryInfo.URL,
+                    EMail   = plugin.FactoryInfo.EMail,
+                    Plugins = [plugin],
+                };
+
+                VendorMap[plugin.FactoryInfo.Vendor] = vendor;
+            }
+
+            foreach (var _class in plugin.Classes)
+            {
+                if (_class.SubCategories == null)
+                {
+                    continue;
+                }
+
+                foreach (var _subCategory in _class.SubCategories)
+                {
+                    if (!categories.Contains(_subCategory))
+                    {
+                        categories.Add(_subCategory);
+                    }
+                }
+            }
+
+
+            foreach (var _category in categories)
+            {
+                if (CategoryMap.TryGetValue(_category, out var category))
+                {
+                    if (!category.Plugins.Contains<Plugin>(plugin))
+                    {
+                        category.Plugins.Add(plugin);
                     }
                 }
                 else
                 {
-                    if (plugin.FactoryInfo.Vendor == null)
+                    category = new Category
                     {
-                        plugin.FactoryInfo.Vendor = "Unknown";
-                    }
-
-                    vendor = new Vendor
-                    {
-                        Name    = plugin.FactoryInfo.Vendor,
-                        URL     = plugin.FactoryInfo.URL,
-                        EMail   = plugin.FactoryInfo.EMail,
+                        Name    = _category,
                         Plugins = [plugin],
                     };
 
-                    VendorMap[plugin.FactoryInfo.Vendor] = vendor;
-                }
-
-                foreach (var _class in plugin.Classes)
-                {
-                    if (_class.SubCategories == null)
-                    {
-                        continue;
-                    }
-
-                    foreach (var _subCategory in _class.SubCategories)
-                    {
-                        if (!categories.Contains(_subCategory))
-                        {
-                            categories.Add(_subCategory);
-                        }
-                    }
-                }
-                
-
-                foreach (var _category in categories)
-                {
-                    if (CategoryMap.TryGetValue(_category, out var category))
-                    {
-                        if (!category.Plugins.Contains<Plugin>(plugin))
-                        {
-                            category.Plugins.Add(plugin);
-                        }
-                    }
-                    else
-                    {
-                        category = new Category
-                        {
-                            Name    = _category,
-                            Plugins = [plugin],
-                        };
-
-                        CategoryMap[_category] = category;
-                    }
+                    CategoryMap[_category] = category;
                 }
             }
-
+            
             PluginsAll.Add(plugin);
         }
-
-        //  Add each plugin to the TreeView
 
         //  Add commas to the plugins count
         Config.Main.LblActive.Text = string.Concat("Active: ", Plugins.Count.ToString("N0"));
 
-        //Config.Main.TVName.ItemsSource     = Plugins;
-        Config.Main.TVVendor.ItemsSource   = VendorMap.Values;
-        //Config.Main.TVCategory.ItemsSource = CategoryMap.Values;
+        Config.Main.TVVendor.ItemsSource   = null;
+        
+        foreach (var vendor in VendorMap.Values)
+        {
+            Config.Main.TVVendor.Items.Add(vendor);
+        }
 
         //  Sort the TreeView
-
-        //Config.Main.TVName.Items.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending));
         Config.Main.TVVendor.Items.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending));
-        //Config.Main.TVCategory.Items.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending));
 
         Debug.WriteLine("Done");
 
@@ -218,26 +249,40 @@ public static class Vst3
     }
 
 
-    private static async void BuildPluginInfo()
+    private static async void BuildPluginInfo(bool rebuild=false)
     {
-        var TotalPlugins = PluginPaths.Count;
-        var CurrentCount = 0;
+        var CurrentCount   = 0;
+        var PluginsToScan  = 0;
 
-        Config.Main.PBar.Maximum = TotalPlugins;
+        foreach (var pluginPath in PluginPaths)
+        {
+            if (!rebuild && PluginInfoMap.ContainsKey(pluginPath))
+            {
+                continue;
+            }
+            
+            PluginsToScan++;
+        }
+
+        Config.Main.PBar.Maximum = PluginsToScan;
         Config.Main.PBar.Value   = 0;
 
         foreach (var pluginPath in PluginPaths)
         {
-            Config.Main.PBar.Value = ++CurrentCount;
-
-            var pluginInfoPath = Path.Combine(Config.Vst3InfoPath, string.Concat(Path.GetFileName(pluginPath), ".json"));
-
-            if (File.Exists(pluginInfoPath))
+            if (!rebuild && PluginInfoMap.ContainsKey(pluginPath))
             {
                 continue;
             }
 
-            Config.Main.LblStatus.Text = string.Concat("Building plugin info for ", Path.GetFileName(pluginPath));
+            var TimeOut      = 30000;
+     
+            Config.Main.PBar.Value = ++CurrentCount;
+
+            var PathHash = GetHash(pluginPath);
+
+            var pluginInfoPath = Path.Combine(Config.Vst3InfoPath, string.Concat(Path.GetFileName(pluginPath), "_", PathHash, ".json"));
+
+            Config.Main.LblStatus.Text = string.Concat("Scanning plugin [", CurrentCount, "/", PluginsToScan, "]:  ", Path.GetFileName(pluginPath));
 
             Process moduleInfo = new();
 
@@ -246,23 +291,65 @@ public static class Vst3
             moduleInfo.StartInfo.UseShellExecute       = false;
             moduleInfo.StartInfo.CreateNoWindow        = true;
             moduleInfo.StartInfo.RedirectStandardError = true;
-            //moduleInfo.StartInfo.WorkingDirectory    = "Lib";
             moduleInfo.Start();
 
-            await moduleInfo.WaitForExitAsync();
+            while (!moduleInfo.HasExited && --TimeOut > 0)
+            {
+                await Task.Delay(1);
+            }
+
+            if (TimeOut <= 0)
+            {
+                moduleInfo.Kill();
+                Debug.WriteLine("Error: Timed out");
+            }
+
 
             if (moduleInfo.ExitCode != 0)
             {
                 Debug.WriteLine(string.Concat("Error: ", moduleInfo.ExitCode));
-                //Debug.WriteLine(moduleInfo.StandardError.ReadToEnd());
+            }
+            else if (File.Exists(pluginInfoPath))
+            {
+                var json = File.ReadAllText(pluginInfoPath);
+
+                if (string.IsNullOrEmpty(json?.Trim()))
+                {
+                    continue;
+                }
+
+                if (PluginInfoMap.TryGetValue(pluginPath, out _))
+                {
+                    PluginInfoMap[pluginPath].Json = json;
+                }
+                else
+                {
+                    PluginInfoMap[pluginPath] = new PluginInfo()
+                    {
+                        Enabled  = true,
+                        FilePath = pluginPath,
+                        Json     = json,
+                    };
+                }
             }
 
             moduleInfo.Close();
 
+            if (CurrentCount % 25 == 0)
+            {
+                SaveMap();
+            }
+
+            File.Delete(pluginInfoPath);
         }
 
         Config.Main.LblStatus.Text = "Done Scanning VST3";
         Config.Main.PBar.Value     = 0;
+
+        SaveMap();
+
+        GetPluginInfo();
+
     }
 
     private static List<string> GetVst3Paths()
@@ -295,4 +382,9 @@ public static class Vst3
         return _Paths;
     }
 
+
+    public static string GetHash(string input) 
+    { 
+        return string.Format("{0:X}", input.GetHashCode());
+    }
 }

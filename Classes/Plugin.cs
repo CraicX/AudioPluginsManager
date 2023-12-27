@@ -24,7 +24,7 @@ public class Plugin : TreeViewItemBase
 
             return kw;
         }
-        set => _keywords = value.Split(',').ToList();
+        set => _keywords = [.. value.Split(',')];
     }
 
     public string Name { get; set; } = "Unknown";
@@ -47,11 +47,39 @@ public class Plugin : TreeViewItemBase
 
     public bool IsFiltered(string filter)
     {
-        if (filter == "") return true;
+        //  Filter type
+        var typeFilter = false;
+
+        if (Config.Main.IsInstrumentsVisible != Config.Main.IsFXVisible) 
+        {
+
+            if (Config.Main.IsInstrumentsVisible && !Categories.Contains("instrument"))
+            {
+                typeFilter = true;
+            }
+
+            if (Config.Main.IsFXVisible && !Categories.Contains("fx"))
+            {
+                typeFilter = true;
+            }
+
+            if (!typeFilter)
+            {
+                return false;
+            }
+        }
+
+        if (filter == "")
+        {
+            return true;
+        }
 
         var isFiltered = true;
 
-        if (_keywords.Count == 0) BuildKeywords();
+        if (_keywords.Count == 0)
+        {
+            BuildKeywords();
+        }
 
         var filterWords = filter.ToLower().Split(' ');
 
@@ -71,7 +99,10 @@ public class Plugin : TreeViewItemBase
     {
         _keywords = [ Name.ToLower(), ];
 
-        if (Classes == null) return "";
+        if (Classes == null)
+        {
+            return "";
+        }
 
         foreach (var _class in Classes)
         {
@@ -80,7 +111,10 @@ public class Plugin : TreeViewItemBase
                 _keywords.Add(_class.Vendor.ToLower());
             }
 
-            if (_class.SubCategories == null) continue;
+            if (_class.SubCategories == null)
+            {
+                continue;
+            }
 
             foreach (var subCategory in _class.SubCategories)
             {
@@ -103,7 +137,10 @@ public class Plugin : TreeViewItemBase
 
             foreach (var _class in Classes)
             {
-                if (_class.SubCategories == null) continue;
+                if (_class.SubCategories == null)
+                {
+                    continue;
+                }
 
                 foreach (var subCategory in _class.SubCategories)
                 {
@@ -114,7 +151,7 @@ public class Plugin : TreeViewItemBase
                 }
             }
 
-            return categories.ToArray();
+            return [.. categories];
         }
     }
 

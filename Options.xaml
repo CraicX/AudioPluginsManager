@@ -1,0 +1,86 @@
+﻿<Window x:Class="AudioPluginsManager.Options"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AudioPluginsManager"
+        mc:Ignorable="d"
+        Title="Options" Height="450" Width="770" WindowStyle="ToolWindow" ResizeMode="NoResize">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <Style x:Key="ItemContainerStyle" TargetType="{x:Type TabItem}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TabItem}">
+                        <Grid Margin="15,5">
+                            <ContentPresenter Content="{TemplateBinding Header}" Margin="10,1,10,1">
+                                <ContentPresenter.Resources>
+                                    <Style TargetType="{x:Type TextBlock}">
+                                        <Setter Property="FontSize" Value="14" />
+                                        <Setter Property="FontWeight" Value="Normal" />
+                                        <Setter Property="Foreground" Value="#FFD8C7A8" />
+                                    </Style>
+                                </ContentPresenter.Resources>
+                            </ContentPresenter>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="TabControlStyle1" TargetType="{x:Type TabControl}">
+            <Setter Property="Background" Value="#2D2C28" />
+            <Setter Property="TabStripPlacement" Value="Left" />
+            <Setter Property="ItemContainerStyle" Value="{StaticResource ItemContainerStyle}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TabControl}">
+                        <Grid x:Name="templateRoot" ClipToBounds="true" SnapsToDevicePixels="true" KeyboardNavigation.TabNavigation="Local">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="1*" />
+                            </Grid.ColumnDefinitions>
+                            <Border Grid.Column="0" Padding="5" Background="#2F2F2F" MinWidth="200">
+                                <DockPanel>
+                                    <TabPanel x:Name="headerPanel" Background="Transparent" Grid.Column="0" IsItemsHost="true" Margin="2,2,2,0" Grid.Row="0" KeyboardNavigation.TabIndex="1" Panel.ZIndex="1"/>
+                                </DockPanel>
+                            </Border>
+                            <Border x:Name="contentPanel" Grid.Column="1" Margin="0" Background="#1A1A1A" BorderThickness="0" >
+                                <ContentPresenter x:Name="PART_SelectedContentHost" ContentSource="SelectedContent" Margin="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                            </Border>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <DockPanel Background="#1A1A1A">
+        <Border DockPanel.Dock="Bottom" Background="#474747" BorderThickness="0,1,0,0" >
+            <WrapPanel Height="25" VerticalAlignment="Center" HorizontalAlignment="Right">
+                <Button Content="OK" Width="70" Margin="2" Background="#323232" FontSize="11" Name="BtnOptsOK" Click="BtnOptsOK_Click" />
+                <Button Content="Cancel" Width="70" Margin="2" Background="#323232" FontSize="11" Name="BtnOptsCancel" Click="BtnOptsCancel_Click" />
+            </WrapPanel>
+        </Border>
+        <TabControl Style="{DynamicResource TabControlStyle1}" Grid.Row="0">
+            <TabItem Header="Plugin Folders">
+                <StackPanel Margin="1">
+                    <WrapPanel Height="25" VerticalAlignment="Center" Background="#474747">
+                        <Label Content="VST3 Folder:" Foreground="#FFD8C7A8" FontSize="11" FontWeight="Normal" VerticalContentAlignment="Center" Margin="15,5,5,5" />
+                        <TextBox Text="{Binding Vst3Folder}" Width="380" Margin="2" Background="#323232" Name="TBFolder" />
+                        <Button Content="..." Width="30" Margin="2" Background="#323232" FontSize="11" Name="BtnOptsBrowseFolder" />
+                        <Button Content="Add" Width="40" Margin="2" Background="#323232" FontSize="11" Name="BtnOptsAddFolder" Click="BtnOptsAddFolder_Click" />
+                    </WrapPanel>
+                    <Border Background="#474747" BorderThickness="0,1,0,1">
+                        <ListBox ItemsSource="{Binding Vst3Folders}" Margin="5,1,5,1" Background="#2F2F2F" BorderThickness="0" Height="300" Name="LBOptionsFolders" d:ItemsSource="{d:SampleData ItemCount=5}" />
+                    </Border>
+                    <Border BorderThickness="0,0,0,0" BorderBrush="#323232" Background="#474747">
+                        <WrapPanel Height="25" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2">
+                            <Button Content="Remove" Width="70" Margin="2" Background="#323232" FontSize="11" Name="BtnOptsRemoveFolder" Click="BtnOptsRemoveFolder_Click" />
+                        </WrapPanel>
+                    </Border>
+
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+        
+    </DockPanel>
+</Window>

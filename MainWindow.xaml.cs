@@ -73,12 +73,27 @@ public partial class MainWindow : AdonisWindow
 
         //ImgFX.Source          = new BitmapImage(new Uri("Resources/img/" + (IsFXVisible ? "t-fx.png" : "t-fx2.png")));
         //ImgInstruments.Source = new BitmapImage(new Uri("Resources/img/" + (IsInstrumentsVisible ? "t-instruments.png" : "t-instruments2.png")));
+
+        Vst3.FilterPlugins(TBFilter.Text);
+
     }
 
-    private void MenuItem_Click(object sender, RoutedEventArgs e)
+    private void MnuFileExit_Click(object sender, RoutedEventArgs e)
     {
         Application.Current.Shutdown();
     }
+
+    private void MnuToolsOptions_Click(object sender, RoutedEventArgs e)
+    {
+        var dlg = new Options();
+        dlg.ShowDialog();
+    }
+
+    private void MnuToolsScan_Click(object sender, RoutedEventArgs e)
+    {
+        Vst3.GetVst3Plugins(true);
+    }
+
 
     private void TVVendor_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
     {

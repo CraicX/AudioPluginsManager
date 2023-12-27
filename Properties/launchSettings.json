@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "AudioPluginsManager": {
+      "commandName": "Project",
+      "nativeDebugging": true,
+      "hotReloadEnabled": false
+    }
+  }
+}

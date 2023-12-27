@@ -20,7 +20,7 @@ public static class Config
 
         Vst3InfoPath = Path.Combine(AssemblyDirectory, "Resources", "Data", "Vst3Info");
 
-        Vst3.GetVst3Plugins();
+        Vst3.Init();
     }
 
     public static string AssemblyDirectory
