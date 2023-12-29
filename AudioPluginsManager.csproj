@@ -332,6 +332,7 @@
 
   <ItemGroup>
     <PackageReference Include="AdonisUI.ClassicTheme" Version="1.17.1" />
+    <PackageReference Include="JsonFormatterPlus" Version="1.0.2" />
     <PackageReference Include="System.Text.Json" Version="8.0.0" />
   </ItemGroup>
 

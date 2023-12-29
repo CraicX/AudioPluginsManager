@@ -15,6 +15,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using JsonFormatterPlus;
+using System.Text.RegularExpressions;
 
 namespace AudioPluginsManager;
 /// <summary>
@@ -97,11 +99,29 @@ public partial class MainWindow : AdonisWindow
 
     private void TVVendor_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
     {
-        //Debug.WriteLine();
+        RTBInfo.Document.Blocks.Clear();
+        if (e.NewValue is not Plugin obj)
+        {
+            return;
+        }
+
+        if (Vst3.PluginInfoMap.TryGetValue(obj.FilePath, out var pluginInfo))
+        {
+            var json = JsonFormatter.Format(pluginInfo.Json);
+
+            // use regex to remove blank lines
+            json = MyRegex().Replace(json, "");
+
+
+            RTBInfo.Document.Blocks.Add(new Paragraph(new Run(json)));
+        }
     }
 
     private void TBFilter_TextChanged(object sender, TextChangedEventArgs e)
     {
         Vst3.FilterPlugins(TBFilter.Text);
     }
+
+    [GeneratedRegex(@"^\s+$[\r\n]*", RegexOptions.Multiline)]
+    private static partial Regex MyRegex();
 }

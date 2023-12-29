@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
+using JsonFormatterPlus;
 using System.Threading.Tasks;
 
 namespace AudioPluginsManager.Classes;
 public static class Vst3
 {
-    public static List<string> PluginFolders { get; set; }                   = [];
+    public static StringCollection PluginFolders { get; set; }               = [];
     public static List<string> PluginPaths { get; set; }                     = [];
     public static List<Plugin> PluginsAll { get; set; }                      = [];
     public static List<Plugin> Plugins { get; set; }                         = [];
@@ -21,10 +23,44 @@ public static class Vst3
 
     public static void Init()
     {
-        if (Properties.Settings.Default.Folders != null && Properties.Settings.Default.Folders.Count > 0)
+        if (Properties.Settings.Default.Folders != null)
         {
-            PluginFolders.AddRange((IEnumerable<string>)Properties.Settings.Default.Folders);
+            PluginFolders = Properties.Settings.Default.Folders;
         }
+
+        if (PluginFolders.Count == 0)
+        {
+            var programFiles    = Environment.ExpandEnvironmentVariables("%ProgramW6432%");
+            var programFilesX86 = Environment.ExpandEnvironmentVariables("%ProgramFiles(x86)%");
+
+            var vst3Path = Path.Combine(programFiles, "Common Files", "VST3");
+            if (Directory.Exists(vst3Path))
+            {
+                PluginFolders.Add(vst3Path);
+            }
+
+            vst3Path = Path.Combine(programFilesX86, "Common Files", "VST3");
+            if (Directory.Exists(vst3Path))
+            {
+                PluginFolders.Add(vst3Path);
+            }
+
+            vst3Path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "Steinberg", "VST3");
+            if (Directory.Exists(vst3Path))
+            {
+                PluginFolders.Add(vst3Path);
+            }
+
+            vst3Path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Steinberg", "VST3");
+            if (Directory.Exists(vst3Path))
+            {
+                PluginFolders.Add(vst3Path);
+            }
+
+            Properties.Settings.Default.Folders = PluginFolders;
+            Properties.Settings.Default.Save();
+        }
+
 
         LoadMap();
 
@@ -67,13 +103,15 @@ public static class Vst3
 
         var json = System.Text.Json.JsonSerializer.Serialize(pluginSet);
 
+        json = JsonFormatter.Format(json);
+
         File.WriteAllText(MapPath, json);
     }
 
 
-    public static void GetVst3Plugins(bool rescan=false)
+    public static async void GetVst3Plugins(bool rescan=false)
     {
-        PluginPaths = GetVst3Paths();
+        PluginPaths = await GetVst3PathsAsync();
 
         if (rescan)
         {
@@ -235,7 +273,6 @@ public static class Vst3
             // Add to treeview
 
             Config.Main.LblActive.Text = string.Concat("Active: ", Plugins.Count.ToString("N0"));
-            //Config.Main.TVVendor.ItemsSource = VendorMap.Values;
         }
         foreach (var vendor in VendorMap.Values)
         {
@@ -245,7 +282,6 @@ public static class Vst3
         //  Sort the TreeView
         Config.Main.TVVendor.Items.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending));
 
-        //Config.Main.TVVendor.Items.Refresh();
     }
 
 
@@ -318,6 +354,8 @@ public static class Vst3
                     continue;
                 }
 
+                json = JsonFormatter.Minify(json);
+
                 if (PluginInfoMap.TryGetValue(pluginPath, out _))
                 {
                     PluginInfoMap[pluginPath].Json = json;
@@ -352,9 +390,26 @@ public static class Vst3
 
     }
 
-    private static List<string> GetVst3Paths()
+    private static async Task<List<string>> GetVst3PathsAsync()
     {
+        if (Properties.Settings.Default.Folders != null)
+        {
+            foreach (var folder in Properties.Settings.Default.Folders)
+            {
+                if (!PluginFolders.Contains(folder) && Directory.Exists(folder))
+                {
+                    PluginFolders.Add(folder);
+                }
+            }
+        }
+
         List<string> _Paths = [];
+
+        foreach (var folder in PluginFolders)
+        {
+            _Paths.AddRange(await GetAllVst3FilesAsync(folder));
+        }
+
 
         Process validator = new();
 
@@ -364,7 +419,7 @@ public static class Vst3
         validator.StartInfo.CreateNoWindow  = true;
 
         validator.Start();
-        validator.WaitForExit();
+        await validator.WaitForExitAsync();
 
         // read text file
         // add each line to PluginsAll list
@@ -373,7 +428,7 @@ public static class Vst3
 
         foreach (var line in lines)
         {
-            if (File.Exists(line))
+            if (!_Paths.Contains(line) && File.Exists(line))
             {
                 _Paths.Add(line);
             }
@@ -386,5 +441,41 @@ public static class Vst3
     public static string GetHash(string input) 
     { 
         return string.Format("{0:X}", input.GetHashCode());
+    }
+
+    public static List<string> GetAllVst3Files(string directoryPath)
+    {
+        var files = new List<string>();
+        if (Directory.Exists(directoryPath))
+        {
+            files.AddRange(Directory.GetFiles(directoryPath, "*.vst3", SearchOption.AllDirectories));
+        }
+
+        for (var i = files.Count; --i >= 0;)
+        {
+            files[i] = files[i].Replace("\\", "/");
+        }
+
+
+        return files;
+    }
+
+    public static async Task<List<string>> GetAllVst3FilesAsync(string directoryPath)
+    {
+        return await Task.Run(() =>
+        {
+            var files = new List<string>();
+            if (Directory.Exists(directoryPath))
+            {
+                files.AddRange(Directory.GetFiles(directoryPath, "*.vst3", SearchOption.AllDirectories));
+            }
+
+            for (var i = files.Count; --i >= 0;)
+            {
+                files[i] = files[i].Replace("\\", "/");
+            }
+
+            return files;
+        });
     }
 }

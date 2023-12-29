@@ -23,11 +23,14 @@ namespace AudioPluginsManager.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         public global::System.Collections.Specialized.StringCollection Folders {
             get {
                 return ((global::System.Collections.Specialized.StringCollection)(this["Folders"]));
+            }
+            set {
+                this["Folders"] = value;
             }
         }
     }

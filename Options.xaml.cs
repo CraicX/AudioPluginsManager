@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,13 +19,19 @@ namespace AudioPluginsManager;
 /// </summary>
 public partial class Options : Window
 {
-    private static readonly List<string> Folders = [];
+    private static StringCollection Folders = [];
 
     public Options()
     {
         InitializeComponent();
 
-        Folders.AddRange((IEnumerable<string>)Properties.Settings.Default.Folders);
+        if (Properties.Settings.Default.Folders == null)
+        {
+            Properties.Settings.Default.Folders = [];
+        }
+
+
+        Folders = Properties.Settings.Default.Folders;
 
         foreach (var folder in Folders)
         {
@@ -57,8 +64,7 @@ public partial class Options : Window
 
     private void BtnOptsOK_Click(object sender, RoutedEventArgs e)
     {
-        Properties.Settings.Default.Folders.Clear();
-        Properties.Settings.Default.Folders.AddRange([.. Folders]);
+        Properties.Settings.Default.Folders = Folders;
         Properties.Settings.Default.Save();
         Close();
     }

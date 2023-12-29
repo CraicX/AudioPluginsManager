@@ -109,14 +109,11 @@
                             </TreeView.ItemContainerStyle>
                             <TreeView.Resources>
                                 <HierarchicalDataTemplate DataType="{x:Type classes:Vendor}" ItemsSource="{Binding Plugins}">
-                                    <StackPanel Orientation="Horizontal">
-                                        <WrapPanel Width="35">
-                                            <TextBlock Text="[ " Foreground="Coral" />
-                                            <TextBlock Text="{Binding Plugins.Count}" Foreground="DarkCyan" />
-                                            <TextBlock Text=" ]" Foreground="Coral" />
-                                        </WrapPanel>
+                                    <DockPanel Width="230">
                                         <TextBlock Text="{Binding Name}" Foreground="Beige" />
-                                    </StackPanel>
+                                        <TextBlock Text="{Binding Plugins.Count}" Foreground="Coral" TextAlignment="Right" />
+                                        
+                                    </DockPanel>
                                 </HierarchicalDataTemplate>
                                 <DataTemplate DataType="{x:Type classes:Plugin}">
                                     <StackPanel Orientation="Horizontal">
@@ -134,6 +131,13 @@
             <StackPanel Grid.Column="1">
                 <Border Height="{Binding TitleBarActualHeight, RelativeSource={RelativeSource AncestorType={x:Type adonisControls:AdonisWindow}}}" />
                 <TextBlock Margin="{adonisUi:Space}"><Run Text="Main content"/></TextBlock>
+                <RichTextBox x:Name="RTBInfo" Height="352" Background="#2F2F2F" BorderThickness="0" Foreground="#BBBBBB" Margin="2">
+                    <FlowDocument>
+                        <Paragraph>
+                            <Run Text="RichTextBox"/>
+                        </Paragraph>
+                    </FlowDocument>
+                </RichTextBox>
             </StackPanel>
         </Grid>
     </DockPanel>
