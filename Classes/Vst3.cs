@@ -70,7 +70,8 @@ public static class Vst3
         }
         else
         {
-            GetPluginInfo();
+            GetVst3Plugins();
+            //GetPluginInfo();
         }
     }
 

@@ -8,7 +8,7 @@
         xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
         xmlns:adonisControls="clr-namespace:AdonisUI.Controls;assembly=AdonisUI"
         mc:Ignorable="d"
-        Title="Audio Plugins Manager" Height="450" Width="800">
+        Title="Audio Plugins Manager" Height="540" Width="975">
     <DockPanel Background="#1A1A1A" >
         <StatusBar DockPanel.Dock="Bottom" Background="#2F2F2F" Margin="0,0,0,0" Panel.ZIndex="-10" BorderThickness="1" BorderBrush="#FF4A4845" Foreground="#FF968F8F">
             <StatusBar.ItemsPanel>
@@ -128,13 +128,46 @@
             </Border>
 
 
-            <StackPanel Grid.Column="1">
+            <StackPanel Grid.Column="1" Background="#474747">
                 <Border Height="{Binding TitleBarActualHeight, RelativeSource={RelativeSource AncestorType={x:Type adonisControls:AdonisWindow}}}" />
-                <TextBlock Margin="{adonisUi:Space}"><Run Text="Main content"/></TextBlock>
+                <TextBlock Margin="{adonisUi:Space}" Foreground="Black" FontWeight="Bold"><Run Text="Plugin Properties"/></TextBlock>
+                <Border Background="#212121" BorderBrush="#1B1B1B" HorizontalAlignment="Left" Padding="5,10,5,15" BorderThickness="1">
+                    <WrapPanel Name="PluginInfoWrap" Orientation="Horizontal" MinWidth="640" MaxWidth="660">
+                        <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                            <TextBlock Text="Name: " Foreground="#BBBBBB" Width="75" TextAlignment="Right" VerticalAlignment="Center" Margin="0,0,5,0" />
+                            <TextBlock Text="" Foreground="#BBBBBB" Width="250" Background="#191919" Padding="10,2,2,2" Name="TBVName" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                            <TextBlock Text="Vendor: " Foreground="#BBBBBB" Width="75" TextAlignment="Right" Margin="0,0,5,0" />
+                            <TextBlock Text="" Foreground="#BBBBBB" Width="250" Background="#191919" Padding="10,2,2,2" Name="TBVVendor" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                            <TextBlock Text="Category: " Foreground="#BBBBBB" Width="75" TextAlignment="Right" VerticalAlignment="Center" Margin="0,0,5,0" />
+                            <TextBlock Text="" Foreground="#BBBBBB" Width="250" Background="#191919" Padding="10,2,2,2" Name="TBVCategory" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                            <TextBlock Text="URL: " Foreground="#BBBBBB" Width="75" TextAlignment="Right" Margin="0,0,5,0" />
+                            <TextBlock Text="" Foreground="#BBBBBB" Width="250" Background="#191919" Padding="10,2,2,2" Name="TBVUrl" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                            <TextBlock Text="Version: " Foreground="#BBBBBB" Width="75" TextAlignment="Right" VerticalAlignment="Center" Margin="0,0,5,0" />
+                            <TextBlock Text="" Foreground="#BBBBBB" Width="250" Background="#191919" Padding="10,2,2,2" Name="TBVVersion" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                            <TextBlock Text="SDK Ver: " Foreground="#BBBBBB" Width="75" TextAlignment="Right" Margin="0,0,5,0" />
+                            <TextBlock Text="" Foreground="#BBBBBB" Width="250" Background="#191919" Padding="10,2,2,2" Name="TBVSDK" />
+                        </StackPanel>
+                        <Border BorderBrush="#474747" BorderThickness="0,1,0,0" Margin="0,10,0,0">
+                            <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                                <TextBlock Text="File: " Foreground="#BBBBBB" Width="75" TextAlignment="Right" Margin="0,0,5,0" />
+                                <TextBlock Text="" FontSize="10" Height="22" Foreground="#BBBBBB" Width="580" Background="#191919" Padding="10,2,2,2" Name="TBVFile" />
+                            </StackPanel>
+                        </Border>
+                    </WrapPanel>
+                </Border>
                 <RichTextBox x:Name="RTBInfo" Height="352" Background="#2F2F2F" BorderThickness="0" Foreground="#BBBBBB" Margin="2">
                     <FlowDocument>
                         <Paragraph>
-                            <Run Text="RichTextBox"/>
                         </Paragraph>
                     </FlowDocument>
                 </RichTextBox>

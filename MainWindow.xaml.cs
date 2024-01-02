@@ -17,6 +17,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using JsonFormatterPlus;
 using System.Text.RegularExpressions;
+using System.Drawing;
 
 namespace AudioPluginsManager;
 /// <summary>
@@ -111,7 +112,14 @@ public partial class MainWindow : AdonisWindow
 
             // use regex to remove blank lines
             json = MyRegex().Replace(json, "");
-
+            
+            TBVName.Text     = obj.Name;
+            TBVFile.Text     = obj.FilePath;
+            TBVCategory.Text = string.Join(", ", obj.Categories.Distinct());
+            TBVVendor.Text   = obj.FactoryInfo.Vendor;
+            TBVUrl.Text      = obj.FactoryInfo.URL;
+            TBVSDK.Text      = obj.Classes[0].SDKVersion;
+            TBVVersion.Text  = obj.Classes[0].Version;
 
             RTBInfo.Document.Blocks.Add(new Paragraph(new Run(json)));
         }
