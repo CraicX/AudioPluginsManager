@@ -8,7 +8,37 @@
         xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
         xmlns:adonisControls="clr-namespace:AdonisUI.Controls;assembly=AdonisUI"
         mc:Ignorable="d"
-        Title="Audio Plugins Manager" Height="540" Width="975">
+        Title="Audio Plugins Manager" Height="575" Width="995">
+    <Window.Resources>
+        <Style TargetType="TabItem">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Border BorderThickness="1" BorderBrush="Black">
+                            <Grid Name="TabPanel" >
+                                <ContentPresenter x:Name="ContentSite"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        ContentSource="Header"
+                                        Margin="10,2"/>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="TabPanel" Property="Background" Value="#474747" />
+                                <Setter Property="FontWeight" Value="Bold" />
+                                <Setter Property="Foreground" Value="#C0D8C0" />
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="False">
+                                <Setter TargetName="TabPanel" Property="Background" Value="#2F2F2F" />
+                                <Setter Property="Foreground" Value="#809080" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
     <DockPanel Background="#1A1A1A" >
         <StatusBar DockPanel.Dock="Bottom" Background="#2F2F2F" Margin="0,0,0,0" Panel.ZIndex="-10" BorderThickness="1" BorderBrush="#FF4A4845" Foreground="#FF968F8F">
             <StatusBar.ItemsPanel>
@@ -84,13 +114,13 @@
                                                     <Setter Property="Background" Value="#32323F" />
                                                 </Trigger>
                                             </Style.Triggers>
-                                            
+
                                             <Setter Property="Foreground" Value="PaleGoldenrod" />
                                             <Setter Property="CaretBrush" Value="White" />
                                             <Setter Property="SelectionBrush" Value="White" />
                                             <Setter Property="SelectionTextBrush" Value="Black" />
                                             <Setter Property="SelectionOpacity" Value="0.5" />
-                                            
+
                                         </Style>
                                     </TextBox.Style>
                                 </TextBox>
@@ -112,7 +142,7 @@
                                     <DockPanel Width="230">
                                         <TextBlock Text="{Binding Name}" Foreground="Beige" />
                                         <TextBlock Text="{Binding Plugins.Count}" Foreground="Coral" TextAlignment="Right" />
-                                        
+
                                     </DockPanel>
                                 </HierarchicalDataTemplate>
                                 <DataTemplate DataType="{x:Type classes:Plugin}">
@@ -127,12 +157,12 @@
                 </DockPanel>
             </Border>
 
+            <DockPanel LastChildFill="True" Grid.Column="1">
+                <Border Background="#474747" BorderBrush="#1B1B1B" Padding="5,10,5,15" BorderThickness="1" DockPanel.Dock="Top" >
 
-            <StackPanel Grid.Column="1" Background="#474747">
-                <Border Height="{Binding TitleBarActualHeight, RelativeSource={RelativeSource AncestorType={x:Type adonisControls:AdonisWindow}}}" />
-                <TextBlock Margin="{adonisUi:Space}" Foreground="Black" FontWeight="Bold"><Run Text="Plugin Properties"/></TextBlock>
-                <Border Background="#212121" BorderBrush="#1B1B1B" HorizontalAlignment="Left" Padding="5,10,5,15" BorderThickness="1">
-                    <WrapPanel Name="PluginInfoWrap" Orientation="Horizontal" MinWidth="640" MaxWidth="660">
+                <StackPanel Background="#212121" Margin="0,0,0,0" MinWidth="680" MaxWidth="680" HorizontalAlignment="Left">
+                    <TextBlock Margin="{adonisUi:Space}" Foreground="#FFD8C0C0" FontWeight="Bold"><Run Text="Plugin Properties"/></TextBlock>
+                    <WrapPanel Name="PluginInfoWrap" Orientation="Horizontal" MinWidth="660" MaxWidth="660" Height="131" HorizontalAlignment="Left">
                         <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
                             <TextBlock Text="Name: " Foreground="#BBBBBB" Width="75" TextAlignment="Right" VerticalAlignment="Center" Margin="0,0,5,0" />
                             <TextBlock Text="" Foreground="#BBBBBB" Width="250" Background="#191919" Padding="10,2,2,2" Name="TBVName" />
@@ -160,18 +190,36 @@
                         <Border BorderBrush="#474747" BorderThickness="0,1,0,0" Margin="0,10,0,0">
                             <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                                 <TextBlock Text="File: " Foreground="#BBBBBB" Width="75" TextAlignment="Right" Margin="0,0,5,0" />
-                                <TextBlock Text="" FontSize="10" Height="22" Foreground="#BBBBBB" Width="580" Background="#191919" Padding="10,2,2,2" Name="TBVFile" />
+                                <TextBlock Text="" FontSize="11" Height="22" Foreground="#BBBBBB" Width="580" Background="#191919" Padding="10,2,2,2" Name="TBVFile" />
                             </StackPanel>
                         </Border>
                     </WrapPanel>
+                </StackPanel>
                 </Border>
-                <RichTextBox x:Name="RTBInfo" Height="352" Background="#2F2F2F" BorderThickness="0" Foreground="#BBBBBB" Margin="2">
-                    <FlowDocument>
-                        <Paragraph>
-                        </Paragraph>
-                    </FlowDocument>
-                </RichTextBox>
-            </StackPanel>
+                <TabControl DockPanel.Dock="Bottom" Background="#474747" Margin="1">
+                    <TabItem Header="Summary">
+                        <Grid Background="#2F2F2F"/>
+                    </TabItem>
+                    <TabItem Header="Images">
+                        <Grid Background="#2F2F2F"/>
+                    </TabItem>
+                    <TabItem Header="Json">
+                        <Grid Background="#2F2F2F">
+                            <RichTextBox x:Name="RTBInfo" Height="352" Background="#2F2F2F" BorderThickness="0" Foreground="#BBBBBB" Margin="2">
+                                <FlowDocument>
+                                    <Paragraph>
+                                    </Paragraph>
+                                </FlowDocument>
+                            </RichTextBox>
+                        </Grid>
+                    </TabItem>
+                </TabControl>
+
+
+
+
+
+            </DockPanel>
         </Grid>
     </DockPanel>
     <Window.Style>
