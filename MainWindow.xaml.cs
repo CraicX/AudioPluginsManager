@@ -1,23 +1,14 @@
-﻿using System.Text;
+﻿using System.Text.Encodings.Web;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using AdonisUI;
 using AdonisUI.Controls;
 using AudioPluginsManager.Classes;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
 using JsonFormatterPlus;
-using System.Text.RegularExpressions;
-using System.Drawing;
+using Microsoft.Web.WebView2.Core;
+using Microsoft.Web.WebView2.Wpf;
 
 namespace AudioPluginsManager;
 /// <summary>
@@ -132,4 +123,22 @@ public partial class MainWindow : AdonisWindow
 
     [GeneratedRegex(@"^\s+$[\r\n]*", RegexOptions.Multiline)]
     private static partial Regex MyRegex();
+
+    private async void BtnScrape_Click(object sender, RoutedEventArgs e)
+    {
+        //  Search bing for images of the VST using webview2
+
+        //  Create serveless webview2
+        var query = UrlEncoder.Default.Encode(TBVName.Text + " vst");
+
+        var wv2 = new WebPageParser();
+        await wv2.NavigateAndParseAsync("https://www.bing.com/images/search?q=" + query);
+        
+        //  Get the images
+        var images = wv2.GetImages();
+
+        //  Get the links
+        var links = wv2.GetLinks();
+
+    }
 }

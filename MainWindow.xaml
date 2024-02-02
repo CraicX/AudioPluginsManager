@@ -201,7 +201,9 @@
                         <Grid Background="#2F2F2F"/>
                     </TabItem>
                     <TabItem Header="Images">
-                        <Grid Background="#2F2F2F"/>
+                        <Grid Background="#2F2F2F">
+                            <Button Content="Button" HorizontalAlignment="Left" Height="30" Margin="35,38,0,0" VerticalAlignment="Top" Width="90" Name="BtnScrape" Click="BtnScrape_Click"/>
+                        </Grid>
                     </TabItem>
                     <TabItem Header="Json">
                         <Grid Background="#2F2F2F">
